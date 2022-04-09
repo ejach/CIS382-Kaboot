@@ -1,9 +1,14 @@
-from flask import Flask, render_template
+from flask import Flask, send_from_directory
+from flask_restful import Api, Resource, reqparse
+from flask_cors import CORS #comment this on deployment
+from app.api.ApiHandler import ApiHandler
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static/public')
+CORS(app) #comment this on deployment
+api = Api(app)
 
+@app.route("/", defaults={'path':''})
+def serve(path):
+    return send_from_directory(app.static_folder,'index.html')
 
-@app.route('/')
-def index():  # put application's code here
-    message = 'Hello, World!'
-    return render_template('index.html', message=message)
+api.add_resource(ApiHandler, '/flask/hello')
