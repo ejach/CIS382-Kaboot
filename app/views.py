@@ -11,4 +11,4 @@ api = Api(app)
 def serve(path):
     return send_from_directory(app.static_folder,'index.html')
 
-api.add_resource(ApiHandler, '/flask/hello')
+api.add_resource(ApiHandler.Questions, '/flask/api/questions')
