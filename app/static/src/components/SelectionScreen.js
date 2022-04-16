@@ -9,11 +9,11 @@ const SelectionScreen = () => {
   const submit = (event) => {
     event.preventDefault();
 
-    if (event.target.id == 'join') {
+    if (event.target.id === 'join') {
       // joining a room via code, we need query the code
       const validated = true;
       if (validated) {
-        console.log('Do something');
+        navigate('/join');
       }
     } else {
       // hosting, redirect them

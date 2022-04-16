@@ -27,97 +27,12 @@ Table of contents
 font & reset css
 --------------------------------------------- 
 */
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 /* 
 ---------------------------------------------
 reset
 --------------------------------------------- 
 */
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-div pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-font,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-figure,
-header,
-nav,
-section,
-article,
-aside,
-footer,
-figcaption {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-}
-
-.clearfix:after {
-  content: '.';
-  display: block;
-  clear: both;
-  visibility: hidden;
-  line-height: 0;
-  height: 0;
-}
-
-.clearfix {
-  display: inline-block;
-}
-
-html[xmlns] .clearfix {
-  display: block;
-}
-
-* html .clearfix {
-  height: 1%;
-}
-
 ul,
 li {
   padding: 0;
@@ -141,7 +56,7 @@ hgroup {
 
 html,
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
   background-color: #fff;
   font-size: 16px;
@@ -176,7 +91,7 @@ global styles
 html,
 body {
   background: #fff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 ::selection {
@@ -209,6 +124,13 @@ body {
 
 .left-heading.light .section-title {
   color: #ffffff;
+}
+
+.error {
+  margin-top: 0;
+  margin-bottom: 1em;
+  color: #ff7900;
+  display: inline-block;
 }
 
 .left-heading .section-title {
@@ -410,8 +332,56 @@ a.main-button {
   transition: all 0.3s ease 0s;
 }
 
-a.main-button:hover {
+.edit {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 8px 15px;
+  color: #fff;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  margin-top: 1em;
+}
+
+.editing {
+  font-size: 12px;
+  margin: 0;
+  border: inset;
+  background: #a6a6a6;
+  outline: rgba(75, 75, 75, 0.08);
+}
+
+.edit img {
+  width: 1em;
+  height: 1em;
+}
+
+.edit:hover {
   background-color: #ff589e;
+}
+
+.selected {
+  background-color: #ff589e;
+}
+
+.radio-button {
+  position: absolute;
+  display: inline-block;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radio-button + img {
+  cursor: pointer;
+  float: right;
+  width: 20px;
+  height: 20px;
+  z-index: 100 !important;
 }
 
 button.main-button {
@@ -437,6 +407,34 @@ button.main-button:hover {
   background-color: #ff589e;
 }
 
+.center {
+  margin: 0 auto;
+  width: 100%;
+}
+
+button.side-button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 8px 15px;
+  background-color: #8261ee;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.25px;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  margin-top: 1em;
+  margin-right: 1em;
+  width: 60%;
+}
+
+button.side-button:hover {
+  background-color: #ff589e;
+}
 /* 
 ---------------------------------------------
 header
@@ -492,34 +490,6 @@ header
   z-index: 999;
 }
 
-.header-area .main-nav .nav li {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.header-area .main-nav .nav li:last-child {
-  padding-right: 0px;
-}
-
-.header-area .main-nav .nav li a {
-  display: block;
-  font-weight: 500;
-  font-size: 13px;
-  color: #fff;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  height: 40px;
-  line-height: 40px;
-  border: transparent;
-  letter-spacing: 1px;
-}
-
-.header-area .main-nav .nav li a:hover {
-  color: #ff589e;
-}
-
 .header-area .main-nav .menu-trigger {
   cursor: pointer;
   display: block;
@@ -565,7 +535,7 @@ header
 
 .header-area .main-nav .menu-trigger span:before,
 .header-area .main-nav .menu-trigger span:after {
-  content: '';
+  content: "";
 }
 
 .header-area .main-nav .menu-trigger span {
@@ -719,6 +689,20 @@ welcome
   height: 60vh;
 }
 
+.selection-area {
+  margin-top: 3em;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  color: #fff;
+  height: 10vh;
+}
+
 .title-area {
   overflow: hidden;
   position: relative;
@@ -729,12 +713,13 @@ welcome
   background-position: center center;
   background-size: cover;
   height: 20vh;
+  margin-top: 10vh;
 }
 
 .welcome-area .header-text,
 .title-area .header-text {
   position: absolute;
-  top: 50%;
+  top: 40%;
   transform: translateY(-55%);
   text-align: center;
   width: 100%;
@@ -845,14 +830,77 @@ welcome
 features
 --------------------------------------------- 
 */
+
+.question-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: auto auto;
+  width: 80%;
+}
+
+.question-selection {
+  margin: 0 auto;
+  width: 22%;
+}
+
+.question-creation {
+  margin: 0 auto;
+  width: 40%;
+}
+
+.question-selection-header {
+  margin: 0 auto;
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  padding: 0;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.question-selection-header textarea {
+  border-radius: 20px;
+}
+
+.answer {
+  width: 100%;
+  height: 5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 12px;
+
+  background: #ffffff;
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  text-align: center;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  position: relative;
+
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.correct {
+  box-shadow: 0 0 0 0.2rem #80ff8b;
+}
+
 .features-small-item {
   display: block;
   background: #ffffff;
   box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 3vw;
+  padding: 10px;
   text-align: center;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
@@ -877,6 +925,9 @@ features
   transition: all 0.3s ease 0s;
   position: relative;
   margin-bottom: 30px;
+  margin-top: 20vh;
+  width: 50%;
+  margin: 10vh auto;
 }
 
 .row {
@@ -884,7 +935,7 @@ features
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  width: 50%;
+  width: 60%;
   margin: 0 auto;
 }
 
@@ -893,7 +944,7 @@ features
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  width: 100%;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -901,6 +952,17 @@ features
   -ms-flex: 0 0 50%;
   flex: 0 0 50%;
   max-width: 75%;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0 auto;
+}
+
+.col-lg {
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
   margin: 0 auto;
 }
 
@@ -940,16 +1002,6 @@ features
   z-index: 2;
 }
 
-.features-small-item p {
-  font-weight: 400;
-  font-size: 13px;
-  color: #777;
-  letter-spacing: 0.5px;
-  line-height: 25px;
-  position: relative;
-  z-index: 2;
-}
-
 .features-small-item a {
   float: right;
   position: relative;
@@ -985,7 +1037,7 @@ parallax & home seperator
 }
 
 .mini:before {
-  content: '';
+  content: "";
   position: absolute;
   width: 140%;
   height: 140%;
@@ -1066,7 +1118,7 @@ parallax & home seperator
 }
 
 .mini .mini-content .mini-box:before {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
   background: #fff;
@@ -1127,7 +1179,7 @@ parallax & home seperator
 }
 
 .counter .content .count-item.decoration-bottom:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 70%;
   height: 32px;
@@ -1145,7 +1197,7 @@ parallax & home seperator
 }
 
 .counter .content .count-item.decoration-top:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 70%;
   height: 32px;
@@ -1532,11 +1584,11 @@ contact
   margin-bottom: 28px;
 }
 
-form input,
-form textarea {
+form input {
   color: #777;
   font-size: 24px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
+  background: #eee;
   width: 100%;
   height: 50px;
   outline: none;
@@ -1550,7 +1602,7 @@ form textarea {
   text-align: center;
 }
 
-form input:focus {
+form input:read-write:focus {
   color: #495057;
   background-color: #fff;
   border-color: #80bdff;
@@ -1558,15 +1610,61 @@ form input:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+form textarea:read-write:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.question-form .answer-text-area {
+  font-size: 12px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border: none;
+  background: #ffffff;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: center;
+  padding: 10px;
+  border-radius: 25px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  resize: none;
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+}
+
+.prompt-text-area {
+  font-size: 16px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border: none;
+  background: #ffffff;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-align: center;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  resize: none;
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+}
 /* 
 ---------------------------------------------
 footer
 --------------------------------------------- 
 */
-footer {
-  background-image: linear-gradient(127deg, #a759d1 0%, #8261ee 91%);
-  padding-top: 30px;
-}
 
 footer .social {
   overflow: hidden;
@@ -1632,7 +1730,7 @@ preloader
 */
 #preloader {
   overflow: hidden;
-  background-image: linear-gradient(135deg, #46178f 0%, #3f1581 100%);
+  background-image: linear-gradient(135deg, #7c50bc 0%, #3f1581 100%);
   left: 0;
   right: 0;
   top: 0;
@@ -1653,13 +1751,9 @@ preloader
   height: 50px;
 }
 
+html,
 body {
-  background: linear-gradient(135deg, #46178f 0%, #3f1581 100%);
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  position: fixed;
+  background: linear-gradient(135deg, #7c50bc 0%, #3f1581 100%);
 }
 
 #preloader .jumper > div {
