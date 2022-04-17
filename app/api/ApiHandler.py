@@ -61,6 +61,7 @@ class ApiHandler(Resource):
 
 
                 # Update question
+                QuestionsDAO.update(data['question']['question_id'], data['question']['prompt'])
 
 
                 ret_status = "SUCCESS"

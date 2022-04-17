@@ -72,6 +72,7 @@ const QuestionSelect = ({
         type: "edit",
         message: {
           question: {
+            question_id: index,
             prompt: values.prompt,
             answers: {
               [Object.keys(question.answers)[0]]: values.answer0,
