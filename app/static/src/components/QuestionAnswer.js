@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import RadioButton from "../components/RadioButton";
 
@@ -15,7 +16,7 @@ const QuestionAnswer = ({
   // Create submit button
   var classes = "answer";
 
-  if (answerID === correctAnswer) {
+  if (answerID == correctAnswer) {
     classes = classes + " correct";
   }
 

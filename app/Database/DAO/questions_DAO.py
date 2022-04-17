@@ -10,12 +10,13 @@ class QuestionsDAO:
         self.prompt = prompt
         self.statements = questions_statements.QuestionsStatements()
 
-    def get_all(self):
+    def get_all_with_answers(self):
         with connect(f'dbname={getenv("dbname")} user={getenv("user")} '
                      f'password={getenv("password")} host={getenv("host")}') as conn:
             cur = conn.cursor()
             cur.execute(self.statements.fetchall())
             res = cur.fetchall()
+            
             return res
 
     def insert(self, prompt):
@@ -23,6 +24,8 @@ class QuestionsDAO:
                      f'password={getenv("password")} host={getenv("host")}') as conn:
             cur = conn.cursor()
             cur.execute(query=self.statements.insert(), vars=(prompt,))
+
+            return cur.fetchone()[0]
 
     def get_by_id(self, row_id):
         with connect(f'dbname={getenv("dbname")} user={getenv("user")} '
@@ -36,4 +39,4 @@ class QuestionsDAO:
         with connect(f'dbname={getenv("dbname")} user={getenv("user")} '
                      f'password={getenv("password")} host={getenv("host")}') as conn:
             cur = conn.cursor()
-            cur.execute(query=self.statements.update(), vars=(prompt, row_id))
+            cur.execute(query=self.statements.update(), vars=(prompt, row_id,))
