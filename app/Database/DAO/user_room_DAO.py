@@ -13,8 +13,3 @@ class UserRoomDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.statements.add_user_to_room(), vars=(user_id, room_id))
-
-
-
-
-
