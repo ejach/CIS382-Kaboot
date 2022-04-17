@@ -7,11 +7,11 @@ class QuestionsStatements:
         return self.stmt
 
     def fetchall(self):
-        self.stmt = 'SELECT * FROM questions'
+        self.stmt = 'SELECT * FROM questions NATURAL JOIN answers'
         return self.stmt
 
     def insert(self):
-        self.stmt = 'INSERT INTO questions (prompt) VALUES (%s)'
+        self.stmt = 'INSERT INTO questions (prompt) VALUES (%s) RETURNING question_id'
         return self.stmt
 
     def update(self):

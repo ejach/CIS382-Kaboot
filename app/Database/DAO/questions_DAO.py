@@ -1,7 +1,6 @@
 from .statements import questions_statements
 from ..decorators.db_connector import with_connection
 
-
 class QuestionsDAO:
     def __init__(self, question_id=None, prompt=None):
         self.question_id = question_id
@@ -9,11 +8,12 @@ class QuestionsDAO:
         self.statements = questions_statements.QuestionsStatements()
 
     @with_connection
-    def get_all(self, **kwargs):
+    def get_all_with_answers(self, **kwargs):
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(self.statements.fetchall())
         res = cur.fetchall()
+        
         return res
 
     @with_connection

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState } from "react";
 
 const RadioButton = ({
@@ -7,7 +8,7 @@ const RadioButton = ({
   correctAnswer,
   setCorrectAnswer,
 }) => {
-  const [value, setValue] = useState(correctAnswer === answerID);
+  const [value, setValue] = useState(correctAnswer == answerID);
 
   function handleChange(e) {
     if (editing === questionID) {
@@ -26,6 +27,7 @@ const RadioButton = ({
           value={answerID}
           checked={value}
           readOnly={true}
+          tabIndex="-1"
         ></input>
         <img
           onClick={(e) => {
@@ -33,7 +35,7 @@ const RadioButton = ({
             handleChange(e);
           }}
           src={
-            correctAnswer === answerID
+            correctAnswer == answerID
               ? require("../images/selected.png")
               : require("../images/empty_select.png")
           }

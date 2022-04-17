@@ -1,32 +1,16 @@
 import React, { useState, useRef } from "react";
 import QuestionAnswer from "../components/QuestionAnswer";
 import { useFormik } from "formik";
+import axios from "axios";
 
-const QuestionSelect = ({ editing, setEditing, index, question }) => {
+const QuestionSelect = ({
+  editing,
+  setEditing,
+  index,
+  question,
+  updateQuestions,
+}) => {
   const [correctAnswer, setCorrectAnswer] = useState(question.correct);
-  const [prompt, setPrompt] = useState(question.prompt);
-
-  function saveQuestion(targetIndex) {
-    var form = forms.current[targetIndex];
-
-    var post = {
-      type: "edit",
-      message: {
-        question: {
-          prompt: form.elements.prompt.value,
-          answers: {
-            [form.elements.answer0.id]: form.elements.answer0.value,
-            [form.elements.answer1.id]: form.elements.answer1.value,
-            [form.elements.answer2.id]: form.elements.answer2.value,
-            [form.elements.answer3.id]: form.elements.answer3.value,
-          },
-          correct: correctAnswer,
-        },
-      },
-    };
-
-    console.log(post);
-  }
 
   // Handle form submission
   const validate = (values) => {
@@ -35,33 +19,33 @@ const QuestionSelect = ({ editing, setEditing, index, question }) => {
     // Prompt
     if (!values.prompt) {
       errors.prompt = "Required";
-    } else if (values.prompt.length > 40) {
-      errors.prompt = "Must be 40 characters or less";
+    } else if (values.prompt.length > 60) {
+      errors.prompt = "Must be 60 characters or less";
     }
 
     // Answers
     if (!values.answer0) {
       errors.answer0 = "Required";
-    } else if (values.answer0.length > 40) {
-      errors.answer0 = "Must be 40 characters or less";
+    } else if (values.answer0.length > 60) {
+      errors.answer0 = "Must be 60 characters or less";
     }
 
     if (!values.answer1) {
       errors.answer1 = "Required";
-    } else if (values.answer1.length > 40) {
-      errors.answer1 = "Must be 40 characters or less";
+    } else if (values.answer1.length > 60) {
+      errors.answer1 = "Must be 60 characters or less";
     }
 
     if (!values.answer2) {
       errors.answer2 = "Required";
-    } else if (values.answer2.length > 40) {
-      errors.answer2 = "Must be 40 characters or less";
+    } else if (values.answer2.length > 60) {
+      errors.answer2 = "Must be 60 characters or less";
     }
 
     if (!values.answer3) {
       errors.answer3 = "Required";
-    } else if (values.answer3.length > 40) {
-      errors.answer3 = "Must be 40 characters or less";
+    } else if (values.answer3.length > 60) {
+      errors.answer3 = "Must be 60 characters or less";
     }
 
     // Correct answer
@@ -83,8 +67,34 @@ const QuestionSelect = ({ editing, setEditing, index, question }) => {
       correct: question.correct,
     },
     validate,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      var post = {
+        type: "edit",
+        message: {
+          question: {
+            question_id: index,
+            prompt: values.prompt,
+            answers: {
+              [Object.keys(question.answers)[0]]: values.answer0,
+              [Object.keys(question.answers)[1]]: values.answer1,
+              [Object.keys(question.answers)[2]]: values.answer2,
+              [Object.keys(question.answers)[3]]: values.answer3,
+            },
+            correct: correctAnswer,
+          },
+        },
+      };
+
+      axios
+        .post("http://localhost:5000/flask/api/questions", post)
+        .then((response) => {
+          if (response["data"]["status"] !== "SUCCESS") {
+            resetForm();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   });
 
@@ -97,6 +107,7 @@ const QuestionSelect = ({ editing, setEditing, index, question }) => {
             className="question-form"
             id={index}
             ref={(element) => (forms.current[index] = element)}
+            onSubmit={formik.handleSubmit}
           >
             {/* Header */}
             <li
@@ -112,6 +123,7 @@ const QuestionSelect = ({ editing, setEditing, index, question }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.prompt}
+                readOnly={editing === index ? false : true}
               ></textarea>
             </li>
             {formik.touched.prompt && formik.errors.prompt ? (
@@ -149,6 +161,7 @@ const QuestionSelect = ({ editing, setEditing, index, question }) => {
               if (formik.isValid) {
                 if (editing === index) {
                   setEditing(-1);
+                  formik.submitForm();
                 } else {
                   setEditing(index);
                 }
