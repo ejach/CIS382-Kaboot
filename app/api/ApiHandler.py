@@ -23,18 +23,17 @@ class ApiHandler(Resource):
 
             res = {}
             for row in (room_dao.get_all_rooms()):
-                print(row)
-
                 room_code = row[0]
-                # Get all the test questions by the ID
                 question_ids = test_question_dao.get_all_by_room_code(room_code)
                 question_duration = row[1]
-                room_points = row[2]
+
+                # 2, 'Ans1', True
                 title = row[3]
+                room_points = row[2]
                 res[room_code] = {}
-                res[room_code]['room_points'] = room_points
                 res[room_code]['title'] = title
                 res[room_code]['question_duration'] = question_duration
+                res[room_code]['room_points'] = room_points
                 res[room_code]["questions"] = {row[0]: question_ids}
 
             return res
@@ -57,7 +56,6 @@ class ApiHandler(Resource):
             print(data)
 
             if request_type == 'add':
-                print(data)
                 # Create room_code
                 result_id = ''.join([str(randint(0, 999)).zfill(3) for _ in range(2)])
                 # Make sure it doesn't already exist in the database
@@ -68,6 +66,8 @@ class ApiHandler(Resource):
                     ret_status = "SUCCESS"
                     ret_msg = "SUCCESSFULLY ADDED"
 
+                    # TODO: create DAO for test_question, add the list of question_id's to test_question upon inserting
+                    # And then get all the question IDs by iterating over it
                     for room_code, question_id in data['room']['questions']:
                         TestQuestionDAO.insert_question_by_room_code(room_code, question_id)
 
