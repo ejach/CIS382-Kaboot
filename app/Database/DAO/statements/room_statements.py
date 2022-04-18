@@ -3,7 +3,7 @@ class RoomStatements:
         self.stmt = None
 
     def insert(self):
-        self.stmt = 'INSERT INTO room (room_code, question_duration) VALUES (%s, %s)'
+        self.stmt = 'INSERT INTO room (room_code, question_duration, room_points, title) VALUES (%s, %s, %s, %s)'
         return self.stmt
 
     def get_room_by_room_code(self):

@@ -3,16 +3,14 @@ from .statements.room_statements import RoomStatements
 
 
 class roomDAO:
-    def __init__(self, room_code=None, duration=None):
-        self.room_code = room_code
-        self.duration = duration
+    def __init__(self):
         self.statements = RoomStatements()
 
     @with_connection
-    def create_room(self, room_code, duration, **kwargs):
+    def create_room(self, room_code, question_duration, room_points, title, **kwargs):
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
-        cur.execute(query=self.statements.insert(), vars=(room_code, duration))
+        cur.execute(query=self.statements.insert(), vars=(room_code, question_duration, room_points, title))
 
     @with_connection
     def get_room_by_room_code(self, room_code, **kwargs):

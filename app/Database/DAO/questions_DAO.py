@@ -1,10 +1,9 @@
 from .statements import questions_statements
 from ..decorators.db_connector import with_connection
 
+
 class QuestionsDAO:
-    def __init__(self, question_id=None, prompt=None):
-        self.question_id = question_id
-        self.prompt = prompt
+    def __init__(self):
         self.statements = questions_statements.QuestionsStatements()
 
     @with_connection
@@ -13,7 +12,6 @@ class QuestionsDAO:
         cur = cnn.cursor()
         cur.execute(self.statements.fetchall())
         res = cur.fetchall()
-        
         return res
 
     @with_connection
