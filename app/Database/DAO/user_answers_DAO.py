@@ -7,7 +7,7 @@ class UserAnswersDAO:
         self.stmt = UserAnswersStatements()
 
     @with_connection
-    def submit_answer(self, test_id, question_id, user_id, answer_id, **kwargs):
+    def submit_answer(self, room_code, question_id, user_id, answer_id, **kwargs):
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
-        cur.execute(query=self.stmt.submit_answer(), vars=(test_id, question_id, user_id, answer_id))
+        cur.execute(query=self.stmt.submit_answer(), vars=(room_code, question_id, user_id, answer_id))

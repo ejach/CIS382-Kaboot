@@ -30,6 +30,8 @@ const Questions = () => {
     correctAnswer: "",
   };
 
+  var [selected, setSelected] = useState({});
+
   if (questions) {
     return (
       <>
