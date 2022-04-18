@@ -3,9 +3,7 @@ from app.Database.DAO.statements.user_room_statements import UserRoomStatments
 
 
 class UserRoomDAO:
-    def __init__(self, user_id=None, room_id=None):
-        self.user_id = user_id
-        self.room_id = room_id
+    def __init__(self):
         self.statements = UserRoomStatments()
 
     @with_connection

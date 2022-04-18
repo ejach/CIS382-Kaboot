@@ -3,11 +3,7 @@ from .statements.user_answers_statements import UserAnswersStatements
 
 
 class UserAnswersDAO:
-    def __init__(self, room_code=None, question_id=None, answer_id=None, user_id=None):
-        self.room_code = room_code
-        self.question_id = question_id
-        self.user_id = user_id
-        self.answer_id = answer_id
+    def __init__(self):
         self.stmt = UserAnswersStatements()
 
     @with_connection
