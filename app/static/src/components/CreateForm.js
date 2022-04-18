@@ -10,8 +10,8 @@ const CreateForm = () => {
     const errors = {};
     if (!values.title) {
       errors.title = "Required";
-    } else if (values.title.length > 15) {
-      errors.title = "Must be 15 characters or less";
+    } else if (values.title.length > 20) {
+      errors.title = "Must be 20 characters or less";
     }
 
     if (!values.points) {
