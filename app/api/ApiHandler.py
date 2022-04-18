@@ -37,8 +37,8 @@ class ApiHandler(Resource):
                 res[room_code]['title'] = title
                 res[room_code]['question_duration'] = question_duration
                 res[room_code]['room_points'] = room_points
-                # Make another dict for the questions, make the room_code the parent element
-                res[room_code]["questions"] = {row[0]: question_ids}
+                # List the question ID's
+                res[room_code]["questions"] = question_ids
 
             return res
 
