@@ -1,4 +1,4 @@
-###Heroku Deployment Instructions
+### Heroku Deployment Instructions
 After deploying the frontend, you must create another app through Heroku to support the frontend.
 
 
