@@ -66,8 +66,6 @@ class ApiHandler(Resource):
                     ret_status = "SUCCESS"
                     ret_msg = "SUCCESSFULLY ADDED"
 
-                    # TODO: create DAO for test_question, add the list of question_id's to test_question upon inserting
-                    # And then get all the question IDs by iterating over it
                     for room_code, question_id in data['room']['questions']:
                         TestQuestionDAO.insert_question_by_room_code(room_code, question_id)
 
