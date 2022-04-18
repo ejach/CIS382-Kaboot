@@ -26,10 +26,9 @@ class ApiHandler(Resource):
                 print(row)
 
                 room_code = row[0]
+                # Get all the test questions by the ID
                 question_ids = test_question_dao.get_all_by_room_code(room_code)
                 question_duration = row[1]
-
-                # 2, 'Ans1', True
                 room_points = row[2]
                 title = row[3]
                 res[room_code] = {}
