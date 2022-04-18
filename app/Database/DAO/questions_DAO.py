@@ -21,6 +21,8 @@ class QuestionsDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.statements.insert(), vars=(prompt,))
+        res = cur.fetchone()
+        return res
 
     @with_connection
     def get_by_id(self, row_id, **kwargs):
