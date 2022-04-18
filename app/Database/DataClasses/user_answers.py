@@ -1,6 +1,6 @@
 class UserAnswers:
-    def __init__(self, test_id, question_id, user_id, answer_id):
-        self.test_id = test_id
+    def __init__(self, room_code, question_id, user_id, answer_id):
+        self.room_code = room_code
         self.question_id = question_id
         self.user_id = user_id
         self.answer_id = answer_id
@@ -14,5 +14,5 @@ class UserAnswers:
     def get_question_id(self):
         return self.question_id
 
-    def get_test_id(self):
-        return self.test_id
+    def get_room_code(self):
+        return self.room_code
