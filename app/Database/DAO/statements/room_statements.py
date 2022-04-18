@@ -17,3 +17,7 @@ class RoomStatements:
     def get_room_points(self):
         self.stmt = 'SELECT (room_points) FROM room WHERE room_code = %s'
         return self.stmt
+
+    def get_all_rooms(self):
+        self.stmt = 'SELECT * FROM room'
+        return self.stmt

@@ -31,3 +31,10 @@ class roomDAO:
         cur = cnn.cursor()
         cur.execute(query=self.statements.get_room_points(), vars=(room_code,))
         return cur.fetchall()
+
+    @with_connection
+    def get_all_rooms(self, **kwargs):
+        cnn = kwargs.pop('cnn')
+        cur = cnn.cursor()
+        cur.execute(query=self.statements.get_all_rooms())
+        return cur.fetchall()

@@ -11,7 +11,7 @@ class TestQuestionDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.stmt.get_all_by_room_code(), vars=(room_code,))
-        return cur.fetchall()
+        return [x[1] for x in cur.fetchall()]
 
     @with_connection
     def insert_question_by_room_code(self, room_code, question_id, **kwargs):
