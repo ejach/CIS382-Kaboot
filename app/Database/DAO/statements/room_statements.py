@@ -7,7 +7,7 @@ class RoomStatements:
         return self.stmt
 
     def get_room_by_room_code(self):
-        self.stmt = 'SELECT * from room WHERE room_code = %s'
+        self.stmt = 'SELECT * FROM room WHERE room_code = %s'
         return self.stmt
 
     def update_duration(self):

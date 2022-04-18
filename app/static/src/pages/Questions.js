@@ -9,7 +9,7 @@ const Questions = () => {
 
   const getQuestions = () => {
     axios
-      .get("http://localhost:5000/flask/api/questions")
+      .get(`/flask/api/questions`)
       .then((response) => {
         setQuestions(response.data);
       })

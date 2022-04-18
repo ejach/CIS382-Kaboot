@@ -13,7 +13,7 @@ RUN pip3 install -r requirements.txt
 
 # Set the env variables
 ENV HOST=0.0.0.0
-ENV PORT=8000
+#ENV THIS_PORT=$PORT
 
 # Expose the following port for the container
 EXPOSE $PORT
