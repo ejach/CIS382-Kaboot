@@ -27,13 +27,17 @@ class ApiHandler(Resource):
                 question_ids = test_question_dao.get_all_by_room_code(room_code)
                 question_duration = row[1]
 
-                # 2, 'Ans1', True
+                # Title of room
                 title = row[3]
+                # Amount of points in the room
                 room_points = row[2]
+                # Make the room code the parent key of the JSON dict
                 res[room_code] = {}
+                # Make the title the first child element of the JSON dict
                 res[room_code]['title'] = title
                 res[room_code]['question_duration'] = question_duration
                 res[room_code]['room_points'] = room_points
+                # Make another dict for the questions, make the room_code the parent element
                 res[room_code]["questions"] = {row[0]: question_ids}
 
             return res
