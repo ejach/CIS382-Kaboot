@@ -1,11 +1,14 @@
 import React, { useEffect, useState, Fragment } from "react";
+import { useFormik } from "formik";
 import axios from "axios";
 import QuestionSelect from "../components/QuestionSelect";
 import QuestionCreate from "../components/QuestionCreate";
-import Loader from "../components/Loader";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
 const Questions = () => {
+  let navigate = useNavigate();
   const [questions, setQuestions] = useState();
+  const [selected, setSelected] = useState([]);
 
   const getQuestions = () => {
     axios
@@ -22,6 +25,57 @@ const Questions = () => {
     getQuestions();
   }, []);
 
+  // Handle form submission
+  const validate = (values) => {
+    const errors = {};
+
+    // Selected questions
+    if (values.length < 3) {
+      errors.selected = "You must select at least three questions";
+    }
+
+    if (editing === 1) {
+      errors.editing = "You must confirm any changes before starting an exam";
+    }
+
+    return errors;
+  };
+
+  // create formik hook
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      points: "",
+      time: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      var post = {
+        type: "add",
+        message: {
+          room: {
+            title: values,
+            question_duration: values.prompt,
+            room_points: values.prompt,
+            questions: selected,
+          },
+        },
+      };
+
+      axios
+        .post("http://localhost:5000/flask/api/rooms", post)
+        .then((response) => {
+          navigate({
+            pathname: "/waiting",
+            search: `?${createSearchParams({ code: response.code })}`,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  });
+
   const [editing, setEditing] = useState(-1);
 
   var newQuestion = {
@@ -29,8 +83,6 @@ const Questions = () => {
     answers: ["", "", "", ""],
     correctAnswer: "",
   };
-
-  var [selected, setSelected] = useState({});
 
   if (questions) {
     return (
@@ -40,6 +92,16 @@ const Questions = () => {
             <div className="header-text">
               <div className="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
                 <h2>Select Exam Questions</h2>
+                <button
+                  form="create-room"
+                  type="submit"
+                  className={
+                    formik.isSubmitting ? "side-button-frozen" : "side-button"
+                  }
+                  disabled={formik.isSubmitting}
+                >
+                  Create
+                </button>
               </div>
             </div>
           </div>
