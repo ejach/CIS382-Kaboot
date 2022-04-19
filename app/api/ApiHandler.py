@@ -7,15 +7,70 @@ from ..Database.DAO.answers_DAO import AnswersDAO
 from ..Database.DAO.questions_DAO import QuestionsDAO
 from ..Database.DAO.room_DAO import roomDAO
 from ..Database.DAO.test_question_DAO import TestQuestionDAO
-from ..validation_kit import is_empty, is_number, is_string, is_positive, within_range
+from ..Database.DAO.user_room_DAO import UserRoomDAO
+from ..validation_kit import is_empty, is_number, is_string, is_positive, within_range, list_is_empty, \
+    check_if_room_exists
 
 QuestionsDAO = QuestionsDAO()
 AnswersDAO = AnswersDAO()
 room_dao = roomDAO()
+user_room_dao = UserRoomDAO()
 test_question_dao = TestQuestionDAO()
 
-# TODO: in general, make sure each POSTed input is not blank, but I will point out specific areas/things to test for
+
 class ApiHandler(Resource):
+    # API implementation for the
+    class Join(Resource):
+        def get(self):
+            res = {}
+            user_rooms = user_room_dao.get_all_user_rooms()
+            users_dict = {}
+            # Organize the users based off of what room they are in
+            for x, y in user_rooms:
+                if y in users_dict:
+                    users_dict[y].append(x)
+                else:
+                    users_dict[y] = [x]
+            for row in user_rooms:
+                user_id = row[1]
+                res[user_id] = {}
+                res[user_id]['users'] = users_dict.get(row[1])
+
+            return res
+
+        def post(self):
+            # If type is 'edit', it overwrites
+            parser = reqparse.RequestParser()
+            parser.add_argument('type', type=str)
+            parser.add_argument('message', type=str)
+
+            args = parser.parse_args()
+
+            request_type = args['type']
+            request_json = args['message']
+
+            request_json = request_json.replace("\'", "\"")
+
+            # Parse JSON into an object with attributes corresponding to dict keys.
+            data = loads(request_json)
+
+            if request_type == 'add':
+                user_id = data['join']['user_id']
+                room_code = data['join']['room_code']
+                # Create a room based off the following
+                if not is_empty(user_id, room_code) and check_if_room_exists(room_code):
+                    user_room_dao.add_user_to_room(user_id, room_code)
+                    ret_status = "SUCCESS"
+                    ret_msg = "SUCCESSFULLY ADDED"
+                    final_ret = {"status": ret_status, "message": ret_msg}
+                else:
+                    ret_status = "FAILURE"
+                    ret_msg = "UNSUCCESSFULLY ADDED"
+                    # Return success status
+                    final_ret = {"status": ret_status, "message": ret_msg}
+
+            return final_ret
+
     class Room(Resource):
         def get(self):
             # {'room': {'room_code': 'a', 'question_duration': '60', 'room_points': '1234', 'title': 'titleName',
@@ -58,40 +113,38 @@ class ApiHandler(Resource):
             # Parse JSON into an object with attributes corresponding to dict keys.
             data = loads(request_json)
 
-            # TODO: make sure question_duration is less than or equal to 60 before creating,
-            #   and make sure each input is not blank
-            if is_empty(data['room']['question_duration']):
-                raise ValueError('Input is empty')
-
-            if not is_number(data['room']['question_duration']):
-                raise TypeError('Question duration must be numeric')
-
-            if within_range(data['room']['question_duration'], 0, 60):
-                raise ValueError('Question duration must be less than or equal to 60 seconds')
-
-            if is_empty(data['room']['room_points']):
-                raise ValueError('Input is empty')
-
-            if is_empty(data['room']['title']):
-                raise ValueError('Input is empty')
-
             if request_type == 'add':
+                duration = data['room']['question_duration']
+                room_points = data['room']['room_points']
+                title = data['room']['title']
+                questions = data['room']['questions']
                 # Create a random 6 digit room code
                 result_id = ''.join([str(randint(0, 999)).zfill(3) for _ in range(2)])
                 # Create a room based off the following
-                room_dao.create_room(result_id, data['room']['question_duration'], data['room']['room_points'],
-                                     data['room']['title'])
-                # Insert each passed room_code into the test_question relation
-                for questions in data['room']['questions']:
-                    test_question_dao.insert_question_by_room_code(result_id, questions)
+                if not is_empty(duration, room_points, title) and not list_is_empty(questions) \
+                        and within_range(duration, 60) \
+                        and is_number(duration) and duration and room_points \
+                        and is_number(room_points) and title:
+                    room_dao.create_room(result_id, duration, room_points, title)
+                    # Insert each passed room_code into the test_question relation
+                    for questions in questions:
+                        test_question_dao.insert_question_by_room_code(result_id, questions)
 
-                ret_status = "SUCCESS"
-                ret_msg = "SUCCESSFULLY ADDED"
+                    ret_status = "SUCCESS"
+                    ret_msg = "SUCCESSFULLY ADDED"
 
-                # Return success status
-                final_ret = {"status": ret_status, "message": ret_msg}
+                    # Return success status
+                    final_ret = {"status": ret_status, "message": ret_msg}
 
-            return final_ret
+                    return final_ret
+                else:
+                    ret_status = "UNSUCCESSFUL"
+                    ret_msg = "UNSUCCESSFULLY ADDED"
+
+                    # Return success status
+                    final_ret = {"status": ret_status, "message": ret_msg}
+
+                    return final_ret
 
     class Questions(Resource):
         def get(self):
@@ -135,45 +188,44 @@ class ApiHandler(Resource):
             # Parse JSON into an object with attributes corresponding to dict keys.
             data = loads(request_json)
 
-            if (request_type == 'edit'):
+            if request_type == 'edit':
                 # {'question': {'prompt': 'a', 'answers': {'5': 'b', '6': 'c', '7': 'd', '8': 'e'}, 'correct': '5'}}
 
                 # Update answers
-                # TODO: Make sure that these are not blank before updating
-                for answer_id, answer_prompt in data['question']['answers'].items():
-                    if is_empty(answer_id):
-                        raise ValueError('Input is empty')
+                if not is_empty(data['question']['answers'].items()):
+                    for answer_id, answer_prompt in data['question']['answers'].items():
+                        is_correct = str(answer_id) == str(data['question']['correct'])
+                        AnswersDAO.update(answer_id, answer_prompt, is_correct)
 
-                    if is_empty(answer_prompt):
-                        raise ValueError('Input is empty')
+                    # Update question
+                    QuestionsDAO.update(data['question']['question_id'], data['question']['prompt'])
 
-                for answer_id, answer_prompt in data['question']['answers'].items():
-                    is_correct = str(answer_id) == str(data['question']['correct'])
-                    AnswersDAO.update(answer_id, answer_prompt, is_correct)
+                    ret_status = "SUCCESS"
+                    ret_msg = "SUCCESSFULLY EDITED"
 
-                # Update question
-                QuestionsDAO.update(data['question']['question_id'], data['question']['prompt'])
+                    final_ret = {"status": ret_status, "message": ret_msg}
+                else:
+                    ret_status = "UNSUCCESSFUL"
+                    ret_msg = "UNSUCCESSFULLY EDITED"
 
-                ret_status = "SUCCESS"
-                ret_msg = "SUCCESSFULLY EDITED"
-
-                final_ret = {"status": ret_status, "message": ret_msg}
+                    final_ret = {"status": ret_status, "message": ret_msg}
 
             elif (request_type == 'add'):
-                # TODO: Make sure that these are not blank before inserting
-                for index in range(4):
-                    if is_empty(data['question']['answers'][str(index)]):
-                        raise ValueError('Input is empty')
+                if not is_empty(data['question']['answers'], data['question']['prompt']):
+                    result_id = QuestionsDAO.insert(data['question']['prompt'])
+                    AnswersDAO.insert(result_id, data['question']['answers']['0'], data['question']['correct'] == '0')
+                    AnswersDAO.insert(result_id, data['question']['answers']['1'], data['question']['correct'] == '1')
+                    AnswersDAO.insert(result_id, data['question']['answers']['2'], data['question']['correct'] == '2')
+                    AnswersDAO.insert(result_id, data['question']['answers']['3'], data['question']['correct'] == '3')
 
-                result_id = QuestionsDAO.insert(data['question']['prompt'])
-                AnswersDAO.insert(result_id, data['question']['answers']['0'], data['question']['correct'] == '0')
-                AnswersDAO.insert(result_id, data['question']['answers']['1'], data['question']['correct'] == '1')
-                AnswersDAO.insert(result_id, data['question']['answers']['2'], data['question']['correct'] == '2')
-                AnswersDAO.insert(result_id, data['question']['answers']['3'], data['question']['correct'] == '3')
+                    ret_status = "SUCCESS"
+                    ret_msg = "SUCCESSFULLY ADDED"
 
-                ret_status = "SUCCESS"
-                ret_msg = "SUCCESSFULLY ADDED"
+                    final_ret = {"status": ret_status, "message": ret_msg}
+                else:
+                    ret_status = "UNSUCCESSFUL"
+                    ret_msg = "UNSUCCESSFULLY ADDED"
 
-                final_ret = {"status": ret_status, "message": ret_msg}
+                    final_ret = {"status": ret_status, "message": ret_msg}
 
             return final_ret

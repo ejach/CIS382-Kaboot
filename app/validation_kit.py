@@ -1,18 +1,27 @@
-import string
+from .Database.DAO.room_DAO import roomDAO
 
 
-def is_empty(input_str):
-    if not input_str:
+def is_empty(*args):
+    for arg in args:
+        if not arg:
+            return True
+        else:
+            return False
+
+
+def list_is_empty(li):
+    if not li:
+        return True
+    else:
         return False
-    return True
 
 
-def within_range(num, lower_num, upper_num):
-    return upper_num >= num > lower_num
+def within_range(num, upper_num):
+    return int(num) <= int(upper_num)
 
 
 def is_number(num):
-    return type(num) == int or type(num) == float
+    return num.isnumeric()
 
 
 def is_positive(num):
@@ -20,8 +29,16 @@ def is_positive(num):
 
 
 def is_string(input_str):
-    return type(input_str) == string
+    if input_str.isalpha():
+        return True
+    else:
+        return False
 
 
-
-# class ValidationKit:
+def check_if_room_exists(room_code):
+    room_dao = roomDAO()
+    res = room_dao.get_room_by_room_code(room_code)
+    if not res:
+        return False
+    else:
+        return True
