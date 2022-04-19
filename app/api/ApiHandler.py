@@ -8,8 +8,7 @@ from ..Database.DAO.questions_DAO import QuestionsDAO
 from ..Database.DAO.room_DAO import roomDAO
 from ..Database.DAO.test_question_DAO import TestQuestionDAO
 from ..Database.DAO.user_room_DAO import UserRoomDAO
-from ..validation_kit import is_empty, is_number, is_string, is_positive, within_range, list_is_empty, \
-    check_if_room_exists
+from ..validation_kit import is_empty, is_number, is_positive, within_range, list_is_empty, check_if_room_exists
 
 QuestionsDAO = QuestionsDAO()
 AnswersDAO = AnswersDAO()
@@ -121,10 +120,10 @@ class ApiHandler(Resource):
                 # Create a random 6 digit room code
                 result_id = ''.join([str(randint(0, 999)).zfill(3) for _ in range(2)])
                 # Create a room based off the following
-                if not is_empty(duration, room_points, title) and not list_is_empty(questions) \
+                if not is_empty(duration, room_points, title) and is_positive(duration, room_points) and \
+                        not list_is_empty(questions) \
                         and within_range(duration, 60) \
-                        and is_number(duration) and duration and room_points \
-                        and is_number(room_points) and title:
+                        and is_number(duration, room_points) and duration and room_points and title:
                     room_dao.create_room(result_id, duration, room_points, title)
                     # Insert each passed room_code into the test_question relation
                     for questions in questions:

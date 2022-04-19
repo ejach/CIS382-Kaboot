@@ -20,12 +20,20 @@ def within_range(num, upper_num):
     return int(num) <= int(upper_num)
 
 
-def is_number(num):
-    return num.isnumeric()
+def is_number(*args):
+    for arg in args:
+        if arg.isnumeric():
+            return True
+        else:
+            return False
 
 
-def is_positive(num):
-    return num > 0
+def is_positive(*args):
+    for arg in args:
+        if int(arg) > 0:
+            return True
+        else:
+            return False
 
 
 def is_string(input_str):
