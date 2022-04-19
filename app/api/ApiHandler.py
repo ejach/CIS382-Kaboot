@@ -7,6 +7,7 @@ from ..Database.DAO.answers_DAO import AnswersDAO
 from ..Database.DAO.questions_DAO import QuestionsDAO
 from ..Database.DAO.room_DAO import roomDAO
 from ..Database.DAO.test_question_DAO import TestQuestionDAO
+from ..validation_kit import is_empty, is_number, is_string, is_positive, within_range
 
 QuestionsDAO = QuestionsDAO()
 AnswersDAO = AnswersDAO()
@@ -59,6 +60,21 @@ class ApiHandler(Resource):
 
             # TODO: make sure question_duration is less than or equal to 60 before creating,
             #   and make sure each input is not blank
+            if is_empty(data['room']['question_duration']):
+                raise ValueError('Input is empty')
+
+            if not is_number(data['room']['question_duration']):
+                raise TypeError('Question duration must be numeric')
+
+            if within_range(data['room']['question_duration'], 0, 60):
+                raise ValueError('Question duration must be less than or equal to 60 seconds')
+
+            if is_empty(data['room']['room_points']):
+                raise ValueError('Input is empty')
+
+            if is_empty(data['room']['title']):
+                raise ValueError('Input is empty')
+
             if request_type == 'add':
                 # Create a random 6 digit room code
                 result_id = ''.join([str(randint(0, 999)).zfill(3) for _ in range(2)])
@@ -125,6 +141,13 @@ class ApiHandler(Resource):
                 # Update answers
                 # TODO: Make sure that these are not blank before updating
                 for answer_id, answer_prompt in data['question']['answers'].items():
+                    if is_empty(answer_id):
+                        raise ValueError('Input is empty')
+
+                    if is_empty(answer_prompt):
+                        raise ValueError('Input is empty')
+
+                for answer_id, answer_prompt in data['question']['answers'].items():
                     is_correct = str(answer_id) == str(data['question']['correct'])
                     AnswersDAO.update(answer_id, answer_prompt, is_correct)
 
@@ -138,6 +161,10 @@ class ApiHandler(Resource):
 
             elif (request_type == 'add'):
                 # TODO: Make sure that these are not blank before inserting
+                for index in range(4):
+                    if is_empty(data['question']['answers'][str(index)]):
+                        raise ValueError('Input is empty')
+
                 result_id = QuestionsDAO.insert(data['question']['prompt'])
                 AnswersDAO.insert(result_id, data['question']['answers']['0'], data['question']['correct'] == '0')
                 AnswersDAO.insert(result_id, data['question']['answers']['1'], data['question']['correct'] == '1')
