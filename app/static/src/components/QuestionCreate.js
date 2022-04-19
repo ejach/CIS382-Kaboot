@@ -15,33 +15,33 @@ const QuestionCreate = ({ question, updateQuestions }) => {
     // Prompt
     if (!values.prompt) {
       errors.prompt = "Required";
-    } else if (values.prompt.length > 60) {
-      errors.prompt = "Must be 60 characters or less";
+    } else if (values.prompt.length > 80) {
+      errors.prompt = "Must be 80 characters or less";
     }
 
     // Answers
     if (!values.answer0) {
       errors.answer0 = "Required";
-    } else if (values.answer0.length > 60) {
-      errors.answer0 = "Must be 60 characters or less";
+    } else if (values.answer0.length > 80) {
+      errors.answer0 = "Must be 80 characters or less";
     }
 
     if (!values.answer1) {
       errors.answer1 = "Required";
-    } else if (values.answer1.length > 60) {
-      errors.answer1 = "Must be 60 characters or less";
+    } else if (values.answer1.length > 80) {
+      errors.answer1 = "Must be 80 characters or less";
     }
 
     if (!values.answer2) {
       errors.answer2 = "Required";
-    } else if (values.answer2.length > 60) {
-      errors.answer2 = "Must be 60 characters or less";
+    } else if (values.answer2.length > 80) {
+      errors.answer2 = "Must be 80 characters or less";
     }
 
     if (!values.answer3) {
       errors.answer3 = "Required";
-    } else if (values.answer3.length > 60) {
-      errors.answer3 = "Must be 60 characters or less";
+    } else if (values.answer3.length > 80) {
+      errors.answer3 = "Must be 80 characters or less";
     }
 
     // Correct answer
