@@ -1,5 +1,5 @@
-from ..decorators.db_connector import with_connection
 from .statements.room_statements import RoomStatements
+from ..decorators.db_connector import with_connection
 
 
 class roomDAO:
@@ -17,7 +17,7 @@ class roomDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.statements.get_room_by_room_code(), vars=(room_code,))
-        return cur.fetchall()
+        return cur.fetchall()[0]
 
     @with_connection
     def update_duration(self, room_code, duration, **kwargs):
@@ -30,4 +30,11 @@ class roomDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.statements.get_room_points(), vars=(room_code,))
+        return cur.fetchall()
+
+    @with_connection
+    def get_all_rooms(self, **kwargs):
+        cnn = kwargs.pop('cnn')
+        cur = cnn.cursor()
+        cur.execute(query=self.statements.get_all_rooms())
         return cur.fetchall()
