@@ -57,6 +57,7 @@ class ApiHandler(Resource):
 
             # Parse JSON into an object with attributes corresponding to dict keys.
             data = json.loads(request_json)
+            print(data)
 
             if request_type == 'add':
                 # Create room_code
