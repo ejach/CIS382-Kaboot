@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import CreateForm from '../components/CreateForm';
+import React, { Fragment, useContext } from "react";
+import CreateForm from "../components/CreateForm";
 
 const HostRoom = () => {
   return (

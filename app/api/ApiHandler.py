@@ -16,7 +16,8 @@ room_dao = roomDAO()
 user_room_dao = UserRoomDAO()
 test_question_dao = TestQuestionDAO()
 
-
+# TODO: in general, make sure each POSTed input is not blank, but I will point out specific areas/things to test for
+# Get and post api
 class ApiHandler(Resource):
     class Test(Resource):
         def get(self):
@@ -99,14 +100,14 @@ class ApiHandler(Resource):
 
             res = {}
             for row in (room_dao.get_all_rooms()):
-                room_code = row[0]
+                room_code = row[3]
                 question_ids = test_question_dao.get_all_by_room_code(room_code)
-                question_duration = row[1]
+                question_duration = row[0]
 
                 # Title of room
-                title = row[3]
+                title = row[2]
                 # Amount of points in the room
-                room_points = row[2]
+                room_points = row[1]
                 # Make the room code the parent key of the JSON dict
                 res[room_code] = {}
                 # Make the title the first child element of the JSON dict
@@ -140,22 +141,20 @@ class ApiHandler(Resource):
                 title = data['room']['title']
                 questions = data['room']['questions']
                 # Create a random 6 digit room code
-                result_id = ''.join([str(randint(0, 999)).zfill(3) for _ in range(2)])
+                result_id = '100' + str(randint(100, 999))
+                print(result_id) #810001007
                 # Create a room based off the following
-                if not is_empty(duration, room_points, title) and is_positive(duration, room_points) and \
-                        not list_is_empty(questions) \
-                        and within_range(duration, 60) \
-                        and is_number(duration, room_points) and duration and room_points and title:
-                    room_dao.create_room(result_id, duration, room_points, title)
-                    # Insert each passed room_code into the test_question relation
-                    for questions in questions:
-                        test_question_dao.insert_question_by_room_code(result_id, questions)
+                room_dao.create_room(result_id, data['room']['question_duration'], data['room']['room_points'],
+                                     data['room']['title'])
+                # Insert each passed room_code into the test_question relation
+                for question_id in data['room']['questions']:
+                    test_question_dao.insert_question_by_room_code(result_id, question_id)
 
                     ret_status = "SUCCESS"
                     ret_msg = "SUCCESSFULLY ADDED"
 
-                    # Return success status
-                    final_ret = {"status": ret_status, "message": ret_msg}
+                # Return success status
+                final_ret = {"status": ret_status, "message": ret_msg, "code": result_id}
 
                     return final_ret
                 else:

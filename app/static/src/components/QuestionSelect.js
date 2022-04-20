@@ -3,14 +3,9 @@ import QuestionAnswer from "../components/QuestionAnswer";
 import { useFormik } from "formik";
 import axios from "axios";
 
-const QuestionSelect = ({
-  editing,
-  setEditing,
-  index,
-  question,
-  updateQuestions,
-}) => {
+const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
   const [correctAnswer, setCorrectAnswer] = useState(question.correct);
+  const [selected, setSelected] = useState(false);
 
   // Handle form submission
   const validate = (values) => {
@@ -19,8 +14,8 @@ const QuestionSelect = ({
     // Prompt
     if (!values.prompt) {
       errors.prompt = "Required";
-    } else if (values.prompt.length > 60) {
-      errors.prompt = "Must be 60 characters or less";
+    } else if (values.prompt.length > 80) {
+      errors.prompt = "Must be 80 characters or less";
     }
 
     // Answers
@@ -86,7 +81,7 @@ const QuestionSelect = ({
       };
 
       axios
-        .post("http://localhost:5000/flask/api/questions", post)
+        .post("/flask/api/questions", post)
         .then((response) => {
           if (response["data"]["status"] !== "SUCCESS") {
             resetForm();
@@ -153,7 +148,15 @@ const QuestionSelect = ({
           {formik.touched.correct && formik.errors.correct ? (
             <div className="error">{formik.errors.correct}</div>
           ) : null}
-          <button className={"side-button"}>Select</button>
+          <button
+            className={"side-button" + (selected === true ? " selected" : "")}
+            onClick={() => {
+              onSelect(index, !selected);
+              setSelected(!selected);
+            }}
+          >
+            {selected === true ? " Selected" : "Select"}
+          </button>
 
           <button
             className={"edit"}
