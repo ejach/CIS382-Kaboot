@@ -142,7 +142,6 @@ class ApiHandler(Resource):
                 questions = data['room']['questions']
                 # Create a random 6 digit room code
                 result_id = '100' + str(randint(100, 999))
-                print(result_id) #810001007
                 # Create a room based off the following
                 room_dao.create_room(result_id, data['room']['question_duration'], data['room']['room_points'],
                                      data['room']['title'])
@@ -156,15 +155,15 @@ class ApiHandler(Resource):
                 # Return success status
                 final_ret = {"status": ret_status, "message": ret_msg, "code": result_id}
 
-                    return final_ret
-                else:
-                    ret_status = "UNSUCCESSFUL"
-                    ret_msg = "UNSUCCESSFULLY ADDED"
+                return final_ret
+            else:
+                ret_status = "UNSUCCESSFUL"
+                ret_msg = "UNSUCCESSFULLY ADDED"
 
-                    # Return success status
-                    final_ret = {"status": ret_status, "message": ret_msg}
+                # Return success status
+                final_ret = {"status": ret_status, "message": ret_msg}
 
-                    return final_ret
+                return final_ret
 
     class Questions(Resource):
         def get(self):
