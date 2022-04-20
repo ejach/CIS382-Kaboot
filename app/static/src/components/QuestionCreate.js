@@ -81,7 +81,7 @@ const QuestionCreate = ({ question, updateQuestions }) => {
       };
 
       axios
-        .post("http://localhost:5000/flask/api/questions", post)
+        .post("/flask/api/questions", post)
         .then((response) => {
           resetForm();
           setCorrectAnswer();

@@ -67,26 +67,12 @@ ul {
   display: inline-block;
 }
 
-a.main-button {
-  font-size: 13px;
-  border-radius: 20px;
-  padding: 12px 20px;
-  background-color: #8261ee;
-  text-transform: uppercase;
-  color: #fff;
-  letter-spacing: 0.25px;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-}
-
 .edit {
   outline: none;
   border: none;
   cursor: pointer;
   font-size: 12px;
-  border-radius: 20px;
+  border-radius: 5px;
   padding: 8px 15px;
   color: #fff;
   -webkit-transition: all 0.3s ease 0s;
@@ -101,14 +87,36 @@ a.main-button {
   margin: 0;
   border: inset;
   background: #a6a6a6;
+  border-color: gold;
   outline: rgba(75, 75, 75, 0.08);
+}
+
+.main-button-frozen {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: px;
+  border-radius: 10px;
+  padding: 12px 20px;
+  background-color: #8261ee;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.25px;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  margin: 30px auto;
+  width: 100%;
+  background-color: #6d6d6d;
+  cursor: wait;
 }
 
 .side-button-frozen {
   outline: none;
   border: none;
   font-size: 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 8px 15px;
   background-color: #6d6d6d;
   text-transform: uppercase;
@@ -139,7 +147,7 @@ a.main-button {
 }
 
 .selected {
-  background-color: #ff589e;
+  background-color: #ff589e !important;
 }
 
 .radio-button {
@@ -158,12 +166,12 @@ a.main-button {
   z-index: 100 !important;
 }
 
-button.main-button {
+.main-button {
   outline: none;
   border: none;
   cursor: pointer;
   font-size: px;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 12px 20px;
   background-color: #8261ee;
   text-transform: uppercase;
@@ -173,12 +181,16 @@ button.main-button {
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
-  margin-top: 30px;
+  margin: 30px auto;
   width: 100%;
 }
 
-button.main-button:hover {
+.main-button:hover {
   background-color: #ff589e;
+}
+
+.main-button-frozen:hover {
+  background-color: #6d6d6d;
 }
 
 .side-button {
@@ -186,7 +198,7 @@ button.main-button:hover {
   border: none;
   cursor: pointer;
   font-size: 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 8px 15px;
   background-color: #8261ee;
   text-transform: uppercase;
@@ -215,20 +227,6 @@ button.main-button:hover {
   background-position: center center;
   background-size: cover;
   height: 60vh;
-}
-
-.selection-area {
-  margin-top: 3em;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  color: #fff;
-  height: 10vh;
 }
 
 .welcome-area .header-text {
@@ -268,7 +266,92 @@ button.main-button:hover {
 
 .question-selection {
   margin: 0 auto;
-  width: 22%;
+  width: 27%;
+}
+
+.large-answer-selection {
+  margin: 0 auto;
+  width: 47%;
+  cursor: pointer;
+}
+
+.large-answer {
+  margin: 5vh;
+}
+
+.features-small-item-A {
+  display: block;
+  background: #e21b3c;
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.features-small-item-B {
+  display: block;
+  background: #1568d0;
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.features-small-item-C {
+  display: block;
+  background: #d99e02;
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.features-small-item-D {
+  display: block;
+  background: #268f0e;
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.features-small-item-A h1,
+.features-small-item-B h1,
+.features-small-item-C h1,
+.features-small-item-D h1 {
+  color: white;
 }
 
 .question-creation {
@@ -278,16 +361,16 @@ button.main-button:hover {
 
 .question-selection-header {
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   margin-top: 1em;
   margin-bottom: 0.5em;
-  padding: 0;
-  border-radius: 25px;
+  padding: 0px;
+  border-radius: 5px;
   text-align: center;
 }
 
 .question-selection-header textarea {
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .answer {
@@ -298,9 +381,9 @@ button.main-button:hover {
 
   background: #ffffff;
   box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   text-align: center;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
@@ -323,9 +406,9 @@ button.main-button:hover {
   display: block;
   background: #ffffff;
   box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 3vw;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   padding: 10px;
   text-align: center;
   -webkit-transition: all 0.3s ease 0s;
@@ -340,9 +423,9 @@ button.main-button:hover {
   display: block;
   background: #ffffff;
   box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   padding: 30px;
   text-align: center;
   -webkit-transition: all 0.3s ease 0s;
@@ -449,6 +532,19 @@ button.main-button:hover {
   }
 }
 
+.creation-area {
+  display: flex;
+  justify-content: center;
+  height: 40vh;
+  margin-top: 10vh;
+}
+
+.creation-area h2 {
+  color: #fff;
+  margin: 0 auto;
+  text-align: center;
+}
+
 form input {
   color: #777;
   font-size: 24px;
@@ -459,7 +555,7 @@ form input {
   outline: none;
   padding-left: 20px;
   padding-right: 20px;
-  border-radius: 25px;
+  border-radius: 5px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -496,7 +592,7 @@ form textarea:read-write:focus {
   appearance: none;
   text-align: center;
   padding: 10px;
-  border-radius: 25px;
+  border-radius: 5px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -506,8 +602,8 @@ form textarea:read-write:focus {
 }
 
 .prompt-text-area {
-  font-size: 16px;
-  height: 100%;
+  font-size: 14px;
+  font-weight: bold;
   width: 100%;
   margin: 0;
   border: none;

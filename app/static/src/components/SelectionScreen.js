@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from 'react';
-import LargeSelection from './LargeSelection';
-import { useNavigate } from 'react-router-dom';
+import React, { Fragment, useState } from "react";
+import LargeSelection from "./LargeSelection";
+import { useNavigate } from "react-router-dom";
 
 const SelectionScreen = () => {
   // Create large selections for joining or creating a room
@@ -9,30 +9,24 @@ const SelectionScreen = () => {
   const submit = (event) => {
     event.preventDefault();
 
-    if (event.target.id === 'join') {
-      // joining a room via code, we need query the code
-      const validated = true;
-      if (validated) {
-        navigate('/join');
-      }
-    } else {
+    if (event.target.id !== "join") {
       // hosting, redirect them
-      navigate('/host');
+      navigate("/host");
     }
   };
 
   return (
-    <section className='section home-feature'>
-      <div className='container'>
-        <div className='col-lg-12'>
-          <div className='row'>
+    <section className="section home-feature">
+      <div className="container">
+        <div className="col-lg-12">
+          <div className="row">
             <LargeSelection
-              title={'Join'}
-              id={'join'}
+              title={"Join"}
+              id={"join"}
               manualCode={true}
               eventHandler={submit}
             />
-            <LargeSelection title={'Host'} id={'host'} eventHandler={submit} />
+            <LargeSelection title={"Host"} id={"host"} eventHandler={submit} />
           </div>
         </div>
       </div>
