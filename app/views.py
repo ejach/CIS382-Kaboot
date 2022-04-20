@@ -20,3 +20,5 @@ api.add_resource(ApiHandler.Questions, '/flask/api/questions')
 api.add_resource(ApiHandler.Room, '/flask/api/room')
 # API Route for join
 api.add_resource(ApiHandler.Join, '/flask/api/join')
+# API Route for test
+api.add_resource(ApiHandler.Test, '/flask/api/test')

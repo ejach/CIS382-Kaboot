@@ -18,7 +18,29 @@ test_question_dao = TestQuestionDAO()
 
 
 class ApiHandler(Resource):
-    # API implementation for the
+    class Test(Resource):
+        def get(self):
+            test_questions = test_question_dao.get_all_test_questions()
+            res = {}
+            # Dict for the questions
+            question_dict = {}
+            # Organize the questions based off of what room they are in
+            for x, y in test_questions:
+                if x in question_dict:
+                    question_dict[x].append(y)
+                else:
+                    question_dict[x] = [y]
+
+            for row in test_questions:
+                room_code = row[0]
+
+                res[room_code] = {}
+
+                res[room_code]['question_id'] = question_dict.get(row[0])
+
+            return res
+
+    # API implementation for the Join
     class Join(Resource):
         def get(self):
             res = {}
