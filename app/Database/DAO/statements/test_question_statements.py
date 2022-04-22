@@ -15,5 +15,5 @@ class TestQuestionStatements:
         return self.stmt
 
     def select_get_current_rooms(self):
-        self.stmt = 'SELECT * FROM get_current_rooms() AS current_rooms'
+        self.stmt = 'SELECT "get_room_members"(%s)'
         return self.stmt

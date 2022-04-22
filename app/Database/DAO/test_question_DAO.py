@@ -31,3 +31,4 @@ class TestQuestionDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.stmt.select_get_current_rooms(), vars=(room_code,))
+        return cur.fetchone()
