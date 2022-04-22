@@ -13,3 +13,7 @@ class TestQuestionStatements:
     def get_all_test_questions(self):
         self.stmt = 'SELECT * FROM test_question'
         return self.stmt
+
+    def select_get_current_rooms(self):
+        self.stmt = 'SELECT * FROM get_current_rooms() AS current_rooms'
+        return self.stmt

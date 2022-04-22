@@ -37,6 +37,8 @@ def advance_question(room_code):
 api.add_resource(ApiHandler.Questions, '/flask/api/questions')
 # API Route for room
 api.add_resource(ApiHandler.Room, '/flask/api/room')
+# API route for rooms
+api.add_resource(ApiHandler.RoomAmount, '/flask/api/current_rooms')
 # API Route for join
 api.add_resource(ApiHandler.Join, '/flask/api/join')
 # API Route for test
