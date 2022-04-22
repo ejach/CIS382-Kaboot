@@ -12,32 +12,47 @@ const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
     const errors = {};
 
     // Prompt
-    if (!values.prompt || values.prompt.trim().length === 0) {
+    if (
+      !values.prompt ||
+      (values.prompt && values.prompt.trim().length === 0)
+    ) {
       errors.prompt = "Required";
     } else if (values.prompt.length > 80) {
       errors.prompt = "Must be 80 characters or less";
     }
 
     // Answers
-    if (!values.answer0 || values.ansswer0.trim().length === 0) {
+    if (
+      !values.answer0 ||
+      (values.ansswer0 && values.ansswer0.trim().length === 0)
+    ) {
       errors.answer0 = "Required";
     } else if (values.answer0.length > 60) {
       errors.answer0 = "Must be 60 characters or less";
     }
 
-    if (!values.answer1 || values.answer1.trim().length === 0) {
+    if (
+      !values.answer1 ||
+      (values.answer1 && values.answer1.trim().length === 0)
+    ) {
       errors.answer1 = "Required";
     } else if (values.answer1.length > 60) {
       errors.answer1 = "Must be 60 characters or less";
     }
 
-    if (!values.answer2 || values.answer2.trim().length === 0) {
+    if (
+      !values.answer2 ||
+      (values.answer2 && values.answer2.trim().length === 0)
+    ) {
       errors.answer2 = "Required";
     } else if (values.answer2.length > 60) {
       errors.answer2 = "Must be 60 characters or less";
     }
 
-    if (!values.answer3 || values.answer3.trim().length === 0) {
+    if (
+      !values.answer3 ||
+      (values.answer3 && values.answer3.trim().length === 0)
+    ) {
       errors.answer3 = "Required";
     } else if (values.answer3.length > 60) {
       errors.answer3 = "Must be 60 characters or less";
