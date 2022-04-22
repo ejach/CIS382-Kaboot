@@ -22,6 +22,7 @@ const Waiting = () => {
   const [seconds, setSeconds] = useState();
   const [timer, setTimer] = useState(date.getTime());
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(-1);
+  const [playerCount, setPlayerCount] = useState(0);
 
   const timerRef = useRef(timer);
   const activeQuestionRef = useRef(activeQuestionIndex);
@@ -106,8 +107,12 @@ const Waiting = () => {
     // Begin updating room count
     try {
       setInterval(async () => {
-        // const resp = await axios.get("/flask/api/room");
-        // console.log(resp);
+        const resp = await axios.get("/flask/api/current_rooms", {
+          params: { room_code: code },
+        });
+        if (resp && resp.data && resp.data[0]) {
+          setPlayerCount(resp.data[0]);
+        }
       }, 3000);
     } catch (e) {
       console.log(e);
@@ -237,6 +242,12 @@ const Waiting = () => {
               ? "CONTINUE"
               : "START EXAM"}
           </button>
+        </div>
+        <div
+          className="features-smaller-item"
+          style={{ display: (startedExam || complete) && "none" }}
+        >
+          <h1 className="features-title">Playercount: {playerCount}</h1>
         </div>
         <div
           className="question-grid"
