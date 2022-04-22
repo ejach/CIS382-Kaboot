@@ -11,12 +11,12 @@ import {
 
 const Questions = () => {
   let navigate = useNavigate();
-  const [questions, setQuestions] = useState();
+  const [question, setQuestions] = useState();
   const [selected, setSelected] = useState([]);
 
   const getQuestions = () => {
     axios
-      .get(`/flask/api/questions`)
+      .get(`/flask/api/question`)
       .then((response) => {
         setQuestions(response.data);
       })
@@ -45,9 +45,9 @@ const Questions = () => {
   const validate = (values) => {
     const errors = {};
 
-    // Selected questions
+    // Selected question
     if (selected.length < 3) {
-      errors.selected = "You must select at least three questions";
+      errors.selected = "You must select at least three question";
     }
 
     if (editing !== -1) {
@@ -78,7 +78,7 @@ const Questions = () => {
             title: title,
             question_duration: time,
             room_points: points,
-            questions: selected,
+            question: selected,
           },
         },
       };
@@ -105,11 +105,11 @@ const Questions = () => {
 
   var newQuestion = {
     prompt: "",
-    answers: ["", "", "", ""],
+    answer: ["", "", "", ""],
     correctAnswer: "",
   };
 
-  if (questions) {
+  if (question) {
     return (
       <>
         <div className="creation-area">
@@ -140,7 +140,7 @@ const Questions = () => {
           </div>
         </div>
         <div className="question-grid">
-          {Object.entries(questions).map((questionData) => {
+          {Object.entries(question).map((questionData) => {
             var index = questionData[0];
             var question = questionData[1];
 

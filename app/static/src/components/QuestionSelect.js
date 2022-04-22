@@ -12,32 +12,32 @@ const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
     const errors = {};
 
     // Prompt
-    if (!values.prompt) {
+    if (!values.prompt || values.prompt.trim().length === 0) {
       errors.prompt = "Required";
     } else if (values.prompt.length > 80) {
       errors.prompt = "Must be 80 characters or less";
     }
 
     // Answers
-    if (!values.answer0) {
+    if (!values.answer0 || values.ansswer0.trim().length === 0) {
       errors.answer0 = "Required";
     } else if (values.answer0.length > 60) {
       errors.answer0 = "Must be 60 characters or less";
     }
 
-    if (!values.answer1) {
+    if (!values.answer1 || values.answer1.trim().length === 0) {
       errors.answer1 = "Required";
     } else if (values.answer1.length > 60) {
       errors.answer1 = "Must be 60 characters or less";
     }
 
-    if (!values.answer2) {
+    if (!values.answer2 || values.answer2.trim().length === 0) {
       errors.answer2 = "Required";
     } else if (values.answer2.length > 60) {
       errors.answer2 = "Must be 60 characters or less";
     }
 
-    if (!values.answer3) {
+    if (!values.answer3 || values.answer3.trim().length === 0) {
       errors.answer3 = "Required";
     } else if (values.answer3.length > 60) {
       errors.answer3 = "Must be 60 characters or less";
@@ -55,10 +55,10 @@ const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
   const formik = useFormik({
     initialValues: {
       prompt: question.prompt,
-      answer0: question.answers[Object.keys(question.answers)[0]],
-      answer1: question.answers[Object.keys(question.answers)[1]],
-      answer2: question.answers[Object.keys(question.answers)[2]],
-      answer3: question.answers[Object.keys(question.answers)[3]],
+      answer0: question.answer[Object.keys(question.answer)[0]],
+      answer1: question.answer[Object.keys(question.answer)[1]],
+      answer2: question.answer[Object.keys(question.answer)[2]],
+      answer3: question.answer[Object.keys(question.answer)[3]],
       correct: question.correct,
     },
     validate,
@@ -69,11 +69,11 @@ const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
           question: {
             question_id: index,
             prompt: values.prompt,
-            answers: {
-              [Object.keys(question.answers)[0]]: values.answer0,
-              [Object.keys(question.answers)[1]]: values.answer1,
-              [Object.keys(question.answers)[2]]: values.answer2,
-              [Object.keys(question.answers)[3]]: values.answer3,
+            answer: {
+              [Object.keys(question.answer)[0]]: values.answer0,
+              [Object.keys(question.answer)[1]]: values.answer1,
+              [Object.keys(question.answer)[2]]: values.answer2,
+              [Object.keys(question.answer)[3]]: values.answer3,
             },
             correct: correctAnswer,
           },
@@ -81,7 +81,7 @@ const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
       };
 
       axios
-        .post("/flask/api/questions", post)
+        .post("/flask/api/question", post)
         .then((response) => {
           if (response["data"]["status"] !== "SUCCESS") {
             resetForm();
@@ -126,7 +126,7 @@ const QuestionSelect = ({ editing, setEditing, index, question, onSelect }) => {
             ) : null}
 
             {/* Answers */}
-            {Object.entries(question.answers).map((answerData, answerCount) => {
+            {Object.entries(question.answer).map((answerData, answerCount) => {
               var answerIndex = answerData[0];
               var answer = answerData[1];
 

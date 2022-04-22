@@ -3,7 +3,7 @@ class TestQuestionStatements:
         self.stmt = None
 
     def get_all_by_room_code(self):
-        self.stmt = 'SELECT question_id FROM test_question WHERE room_code = %s'
+        self.stmt = 'SELECT * FROM test_question NATURAL JOIN question NATURAL JOIN answer WHERE room_code = %s'
         return self.stmt
 
     def insert_question_by_room_code(self):

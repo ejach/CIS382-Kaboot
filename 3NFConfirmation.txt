@@ -7,9 +7,9 @@ The textbook describes the conditions for a relation schema to considered to be 
 		• Each attribute A in β−α is contained in a candidate key for R.
 
 List of all functional dependencies within each table:
-	Table: questions
+	Table: question
 		• question_id → prompt
-	Table: answers
+	Table: answer
 		• answer_id → answer_prompt, question_id, correct
 	Table: room
 		• room_code → question_duration, room_points
@@ -17,22 +17,22 @@ List of all functional dependencies within each table:
 		• question_id → test_id
 	Table: user_room
 		• user_id → room_id
-	Table: user_answers
+	Table: user_answer
 		• question_id, test_id, user_id → answer_id
 
 Demonstration that each table fits into third normal form:
-	Table: questions
+	Table: question
 		• question_id → prompt
-			The relation questions is in thrid normal form since the only functional 
+			The relation question is in thrid normal form since the only functional 
 			dependency is "question_id → prompt" which holds to the condition of "α 
-			is a superkey for R" since question_id is a superkey for questions because
+			is a superkey for R" since question_id is a superkey for question because
 			it is defined as the primary key.  
-	Table: answers
+	Table: answer
 		• answer_id → answer_prompt, question_id, correct
-			The relation answers is in thrid normal form since the only functional 
+			The relation answer is in thrid normal form since the only functional 
 			dependency is "answer_id → answer_prompt, question_id, correct" which 
 			holds to the condition of "α is a superkey for R" since answer_id is a 
-			superkey for answers because it is defined as the primary key.    
+			superkey for answer because it is defined as the primary key.    
 	Table: room
 		• room_code → question_duration, room_points
 			The relation room is in thrid normal form since the only functional 
@@ -51,10 +51,10 @@ Demonstration that each table fits into third normal form:
 			functional dependency is "user_id → room_id" which holds to the 
 			condition of "α is a superkey for R" since user_id is a superkey for 
 			user_room because user_id is defined as the primary key.
-	Table: user_answers
+	Table: user_answer
 		• question_id, test_id, user_id → answer_id
-			The relation user_answers is in thrid normal form since the only 
+			The relation user_answer is in thrid normal form since the only 
 			functional dependency is "question_id, test_id, user_id → answer_id" 
 			which holds to the condition of "α is a superkey for R" since (question_id, 
-			test_id, user_id) is a superkey for user_answers because (question_id, 
+			test_id, user_id) is a superkey for user_answer because (question_id, 
 			test_id, user_id) is defined as the primary key.
