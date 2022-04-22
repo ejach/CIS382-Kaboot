@@ -8,19 +8,19 @@ const CreateForm = () => {
   // Handle form submission
   const validate = (values) => {
     const errors = {};
-    if (!values.title) {
+    if (!values.title || values.title.trim().length === 0) {
       errors.title = "Required";
     } else if (values.title.length > 20) {
       errors.title = "Must be 20 characters or less";
     }
 
-    if (!values.points) {
+    if (!values.points || values.points.trim().length === 0) {
       errors.points = "Required";
     } else if (isNaN(values.points) || values.points <= 0) {
       errors.points = "Must be a number greater than zero";
     }
 
-    if (!values.time) {
+    if (!values.time || values.time.trim().length === 0) {
       errors.time = "Required";
     } else if (isNaN(values.time) || values.time < 5 || values.time > 60) {
       errors.time = "Must be between 5 and 60 seconds";
@@ -39,7 +39,7 @@ const CreateForm = () => {
     validate,
     onSubmit: (values) => {
       navigate({
-        pathname: "/questions",
+        pathname: "/question",
         search: `?${createSearchParams(formik.values)}`,
       });
     },
@@ -88,7 +88,7 @@ const CreateForm = () => {
             <input
               name="time"
               type="text"
-              placeholder="Time Limit"
+              placeholder="Question Time"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.lastName}

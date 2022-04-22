@@ -17,7 +17,7 @@ const LargeSelection = ({ title, id, manualCode, eventHandler }) => {
       errors.code = "Must be 6 digits";
     }
 
-    if (!values.nickname) {
+    if (!values.nickname || values.nickname.trim().length === 0) {
       errors.nickname = "Required";
     } else if (values.nickname.length >= 15) {
       errors.nickname = "Must be less than 15 characters";

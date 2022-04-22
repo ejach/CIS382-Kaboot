@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import HostRoom from "./pages/HostRoom";
 import Questions from "./pages/Questions";
 import Waiting from "./pages/Waiting";
+import Results from "./pages/Results";
 import { ToastContainer } from "react-toastify";
 import { SocketContext, socket } from "./context/socket";
 
@@ -22,8 +23,9 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="host" element={<HostRoom />} />
-              <Route path="questions" element={<Questions />} />
+              <Route path="question" element={<Questions />} />
               <Route path="waiting" element={<Waiting />} />
+              <Route path="results" element={<Results />} />
             </Route>
           </Routes>
         </BrowserRouter>

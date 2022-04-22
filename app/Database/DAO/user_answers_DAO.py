@@ -11,3 +11,11 @@ class UserAnswersDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.stmt.submit_answer(), vars=(room_code, question_id, user_id, answer_id))
+
+    @with_connection
+    def get_room_answers(self, room_code, **kwargs):
+        cnn = kwargs.pop('cnn')
+        cur = cnn.cursor()
+        cur.execute(query=self.stmt.get_all_room_answers(), vars=(room_code,))
+        res = cur.fetchall()
+        return res

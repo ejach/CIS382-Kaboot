@@ -1,6 +1,7 @@
 from json import loads
 from random import randint
 
+from flask import request
 from flask_restful import Resource, reqparse
 
 from ..Database.DAO.answers_DAO import AnswersDAO
@@ -8,6 +9,7 @@ from ..Database.DAO.questions_DAO import QuestionsDAO
 from ..Database.DAO.room_DAO import roomDAO
 from ..Database.DAO.test_question_DAO import TestQuestionDAO
 from ..Database.DAO.user_room_DAO import UserRoomDAO
+from ..Database.DAO.user_answers_DAO import UserAnswersDAO 
 from ..validation_kit import is_empty, is_number, is_positive, within_range, list_is_empty, check_if_room_exists
 
 QuestionsDAO = QuestionsDAO()
@@ -15,6 +17,7 @@ AnswersDAO = AnswersDAO()
 room_dao = roomDAO()
 user_room_dao = UserRoomDAO()
 test_question_dao = TestQuestionDAO()
+user_answer_dao = UserAnswersDAO()
 
 # TODO: in general, make sure each POSTed input is not blank, but I will point out specific areas/things to test for
 # Get and post api
@@ -32,9 +35,9 @@ class ApiHandler(Resource):
         def get(self):
             test_questions = test_question_dao.get_all_test_questions()
             res = {}
-            # Dict for the questions
+            # Dict for the question
             question_dict = {}
-            # Organize the questions based off of what room they are in
+            # Organize the question based off of what room they are in
             for x, y in test_questions:
                 if x in question_dict:
                     question_dict[x].append(y)
@@ -49,6 +52,37 @@ class ApiHandler(Resource):
                 res[room_code]['question_id'] = question_dict.get(row[0])
 
             return res
+
+    # Api Class for submitting and getting answers
+    class Submit(Resource):
+        def get(self):
+            room_code = request.args.get('room_code', '')
+            
+            if not is_empty(room_code) and check_if_room_exists(room_code):
+                user_answers = user_answer_dao.get_room_answers(room_code)
+
+                return user_answers
+
+        def post(self, data):
+            request_type = data['type']
+            request_json = data['message']
+
+            data = request_json
+            if request_type == 'add':
+                user_id = data['submit']['user_id']
+                room_code = data['submit']['room_code']
+                question_id = data['submit']['question_id']
+                answer_id = data['submit']['answer_id']
+                
+                # Create a room based off the following
+                if not is_empty(user_id, room_code, question_id, answer_id) and check_if_room_exists(room_code):
+                    user_answer_dao.submit_answer(room_code, question_id, user_id, answer_id)
+
+                    ret_status = "SUCCESS"
+                    ret_msg = "SUCCESSFULLY ADDED"
+                    final_ret = {"status": ret_status, "message": ret_msg}
+
+                    return final_ret
 
     # API implementation for the Join
     class Join(Resource):
@@ -69,43 +103,51 @@ class ApiHandler(Resource):
 
             return res
 
-        def post(self):
+        def post(self, data):
             # If type is 'edit', it overwrites
-            parser = reqparse.RequestParser()
-            parser.add_argument('type', type=str)
-            parser.add_argument('message', type=str)
+            request_type = None
+            if not data:
+                parser = reqparse.RequestParser()
+                parser.add_argument('type', type=str)
+                parser.add_argument('message', type=str)
 
-            args = parser.parse_args()
+                args = parser.parse_args()
 
-            request_type = args['type']
-            request_json = args['message']
+                request_type = args['type']
+                request_json = args['message']
 
-            request_json = request_json.replace("\'", "\"")
+                request_json = request_json.replace("\'", "\"")
 
-            # Parse JSON into an object with attributes corresponding to dict keys.
-            data = loads(request_json)
+                # Parse JSON into an object with attributes corresponding to dict keys.
+                data = loads(request_json)
+            else:
+                request_type = data['type']
+                request_json = data['message']
 
+                data = request_json
             if request_type == 'add':
                 user_id = data['join']['user_id']
                 room_code = data['join']['room_code']
+                
                 # Create a room based off the following
                 if not is_empty(user_id, room_code) and check_if_room_exists(room_code):
-                    user_room_dao.add_user_to_room(user_id, room_code)
-                    ret_status = "SUCCESS"
-                    ret_msg = "SUCCESSFULLY ADDED"
-                    final_ret = {"status": ret_status, "message": ret_msg}
+                    if(user_id != "Host"):
+                        user_room_dao.add_user_to_room(user_id, room_code)
+                        ret_status = "SUCCESS"
+                        ret_msg = "SUCCESSFULLY ADDED"
+                        final_ret = {"status": ret_status, "message": ret_msg}
                 else:
                     ret_status = "FAILURE"
                     ret_msg = "UNSUCCESSFULLY ADDED"
                     # Return success status
                     final_ret = {"status": ret_status, "message": ret_msg}
 
-            return final_ret
+                return final_ret
 
     class Room(Resource):
         def get(self):
             # {'room': {'room_code': 'a', 'question_duration': '60', 'room_points': '1234', 'title': 'titleName',
-            # 'questions': {'13214', '131415' ...}}
+            # 'question': {'13214', '131415' ...}}
 
             res = {}
             for row in (room_dao.get_all_rooms()):
@@ -124,7 +166,7 @@ class ApiHandler(Resource):
                 res[room_code]['question_duration'] = question_duration
                 res[room_code]['room_points'] = room_points
                 # List the question ID's
-                res[room_code]["questions"] = question_ids
+                res[room_code]["question"] = question_ids
 
             return res
 
@@ -148,14 +190,14 @@ class ApiHandler(Resource):
                 duration = data['room']['question_duration']
                 room_points = data['room']['room_points']
                 title = data['room']['title']
-                questions = data['room']['questions']
+                question = data['room']['question']
                 # Create a random 6 digit room code
                 result_id = '100' + str(randint(100, 999))
                 # Create a room based off the following
                 room_dao.create_room(result_id, data['room']['question_duration'], data['room']['room_points'],
                                      data['room']['title'])
                 # Insert each passed room_code into the test_question relation
-                for question_id in data['room']['questions']:
+                for question_id in data['room']['question']:
                     test_question_dao.insert_question_by_room_code(result_id, question_id)
 
                     ret_status = "SUCCESS"
@@ -190,10 +232,10 @@ class ApiHandler(Resource):
 
                 if question_id not in res:
                     res[question_id] = {}
-                    res[question_id]["answers"] = {}
+                    res[question_id]["answer"] = {}
                     res[question_id]["prompt"] = prompt
 
-                res[question_id]["answers"][ans_id] = ans_prompt
+                res[question_id]["answer"][ans_id] = ans_prompt
 
                 if ans_true:
                     res[question_id]["correct"] = ans_id
@@ -217,11 +259,11 @@ class ApiHandler(Resource):
             data = loads(request_json)
 
             if request_type == 'edit':
-                # {'question': {'prompt': 'a', 'answers': {'5': 'b', '6': 'c', '7': 'd', '8': 'e'}, 'correct': '5'}}
+                # {'question': {'prompt': 'a', 'answer': {'5': 'b', '6': 'c', '7': 'd', '8': 'e'}, 'correct': '5'}}
 
-                # Update answers
-                if not is_empty(data['question']['answers'].items()):
-                    for answer_id, answer_prompt in data['question']['answers'].items():
+                # Update answer
+                if not is_empty(data['question']['answer'].items()):
+                    for answer_id, answer_prompt in data['question']['answer'].items():
                         is_correct = str(answer_id) == str(data['question']['correct'])
                         AnswersDAO.update(answer_id, answer_prompt, is_correct)
 
@@ -239,12 +281,12 @@ class ApiHandler(Resource):
                     final_ret = {"status": ret_status, "message": ret_msg}
 
             elif (request_type == 'add'):
-                if not is_empty(data['question']['answers'], data['question']['prompt']):
+                if not is_empty(data['question']['answer'], data['question']['prompt']):
                     result_id = QuestionsDAO.insert(data['question']['prompt'])
-                    AnswersDAO.insert(result_id, data['question']['answers']['0'], data['question']['correct'] == '0')
-                    AnswersDAO.insert(result_id, data['question']['answers']['1'], data['question']['correct'] == '1')
-                    AnswersDAO.insert(result_id, data['question']['answers']['2'], data['question']['correct'] == '2')
-                    AnswersDAO.insert(result_id, data['question']['answers']['3'], data['question']['correct'] == '3')
+                    AnswersDAO.insert(result_id, data['question']['answer']['0'], data['question']['correct'] == '0')
+                    AnswersDAO.insert(result_id, data['question']['answer']['1'], data['question']['correct'] == '1')
+                    AnswersDAO.insert(result_id, data['question']['answer']['2'], data['question']['correct'] == '2')
+                    AnswersDAO.insert(result_id, data['question']['answer']['3'], data['question']['correct'] == '3')
 
                     ret_status = "SUCCESS"
                     ret_msg = "SUCCESSFULLY ADDED"

@@ -19,27 +19,44 @@ def serve(path):
 def enter_room(room_code, user):
     join_room(room_code)
     send({'prompt': user + ' has entered the room.'}, to=room_code)
+    ApiHandler.Join().post({
+        'type': 'add',
+        'message': {
+            'join': {
+                'room_code': room_code,
+                'user_id': user,
+            }
+        }
+    })
 
 @socketio.on('submitAnswer')
-def submit_answer(room_code, user, answer):
-    send({'user': user, 'answer': answer, 'type': 'answer'}, to=room_code)
-
-@socketio.on('startExam')
-def start_exam(room_code):
-    data = ApiHandler.Room().get()[str(room_code)]
-    send({'data': data, 'type': 'startExam'}, to=room_code)
+def submit_answer(room_code, user, question_id, answerIndex, letter):
+    send({'user': user, 'answer': letter, 'type': 'answer'}, to=room_code)
+    ApiHandler.Submit().post({
+        'type': 'add',
+        'message': {
+            'submit': {
+                'room_code': room_code,
+                'user_id': user,
+                'answer_id': answerIndex,
+                'question_id': question_id
+            }
+        }
+    })
 
 @socketio.on('advanceQuestion')
 def advance_question(room_code):
     send({'type': 'advanceQuestion'}, to=room_code)
 
-# API Route for questions
-api.add_resource(ApiHandler.Questions, '/flask/api/questions')
+# API Route for question
+api.add_resource(ApiHandler.Questions, '/flask/api/question')
 # API Route for room
 api.add_resource(ApiHandler.Room, '/flask/api/room')
 # API route for rooms
 api.add_resource(ApiHandler.RoomAmount, '/flask/api/current_rooms')
 # API Route for join
 api.add_resource(ApiHandler.Join, '/flask/api/join')
+# API Route for submissions
+api.add_resource(ApiHandler.Submit, '/flask/api/submit')
 # API Route for test
 api.add_resource(ApiHandler.Test, '/flask/api/test')
