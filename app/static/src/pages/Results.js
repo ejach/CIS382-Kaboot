@@ -88,15 +88,17 @@ const Results = () => {
             var percent = row[1];
             var userPoints = points * percent;
 
-            return (
-              <LeaderboardEntry
-                key={user}
-                index={index}
-                user={user}
-                points={userPoints}
-                percent={percent}
-              ></LeaderboardEntry>
-            );
+            if (user != "null") {
+              return (
+                <LeaderboardEntry
+                  key={user}
+                  index={index}
+                  user={user}
+                  points={userPoints}
+                  percent={percent}
+                ></LeaderboardEntry>
+              );
+            }
           })}
         </ul>
       </>

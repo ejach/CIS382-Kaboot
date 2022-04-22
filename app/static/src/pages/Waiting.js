@@ -110,6 +110,7 @@ const Waiting = () => {
         const resp = await axios.get("/flask/api/current_rooms", {
           params: { room_code: code },
         });
+        console.log(resp);
         if (resp && resp.data && resp.data[0]) {
           setPlayerCount(resp.data[0]);
         }
