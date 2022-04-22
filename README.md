@@ -1,5 +1,11 @@
 # CIS382-Kaboot
 
+### E-R Diagram
+![PyPI](https://github.com/ejach/CIS382-Kaboot/blob/main/E-R%20Diagram.png)
+
+### 3NF Confirmation
+https://github.com/ejach/CIS382-Kaboot/blob/main/3NFConfirmation.txt
+
 ### Project Specification v1.2
 
 #### CIS-382 Database Programming
