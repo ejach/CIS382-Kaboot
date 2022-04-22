@@ -16,7 +16,7 @@ List of all functional dependencies within each table:
 	Table: test_question
 		• question_id → test_id
 	Table: user_room
-		• user_id → room_id
+		• user_id → room_code
 	Table: user_answer
 		• question_id, test_id, user_id → answer_id
 
@@ -46,9 +46,9 @@ Demonstration that each table fits into third normal form:
 			condition of "α is a superkey for R" since answer_id is a superkey for 
 			test_question because question_id is defined as the primary key.
 	Table: user_room
-		• user_id → room_id
+		• user_id → room_code
 			The relation user_room is in thrid normal form since the only 
-			functional dependency is "user_id → room_id" which holds to the 
+			functional dependency is "user_id → room_code" which holds to the 
 			condition of "α is a superkey for R" since user_id is a superkey for 
 			user_room because user_id is defined as the primary key.
 	Table: user_answer

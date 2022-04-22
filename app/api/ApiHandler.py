@@ -22,6 +22,15 @@ user_answer_dao = UserAnswersDAO()
 # TODO: in general, make sure each POSTed input is not blank, but I will point out specific areas/things to test for
 # Get and post api
 class ApiHandler(Resource):
+    class RoomAmount:
+        def get(self):
+            res = {}
+            question_ids = test_question_dao.get_current_rooms()
+            # Make the title the first child element of the JSON dict
+            res['current_rooms'] = question_ids
+
+            return res
+
     class Test(Resource):
         def get(self):
             test_questions = test_question_dao.get_all_test_questions()

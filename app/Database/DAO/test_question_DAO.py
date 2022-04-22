@@ -25,3 +25,9 @@ class TestQuestionDAO:
         cnn = kwargs.pop('cnn')
         cur = cnn.cursor()
         cur.execute(query=self.stmt.insert_question_by_room_code(), vars=(room_code, question_id))
+
+    @with_connection
+    def get_current_rooms(self, room_code, **kwargs):
+        cnn = kwargs.pop('cnn')
+        cur = cnn.cursor()
+        cur.execute(query=self.stmt.select_get_current_rooms(), vars=(room_code,))
